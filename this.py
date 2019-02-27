@@ -3,7 +3,7 @@ class Img:
     def __init__(self,r,c):
         self.c=c
         self.r=r
-        self.img=[0 for i in range(r*c)]
+        self.img=[0]*r*c
     def s(self,r,c,v):
         self.img[c+r*self.c]=v
     def ln(self,rs,cs,rf,cf,v):
@@ -35,9 +35,12 @@ class Etrx:
     def __str__(self):
         return"\n".join(" ".join(("  "if i<10 else" "if i<100 else"")+str(i) for i in self.m[j::4]) for j in range(4))+"\n"
     def x(self,m):
-        self.m=[sum(self.m[i-(i%4)+k]*m[i%4*4+k] for k in range(4)) for i in range(len(self.m))]
-def idm(n):
-    return tuple(1.0 if i==j else 0.0 for j in range(n)for i in range(n))
+        self.m=[sum(self.m[i-(i%4)+k]*float(m[i%4*4+k]) for k in range(4)) for i in range(len(self.m))]
+    def idm(self):
+        self.m=tuple(1.0 if i==j else 0.0 for j in range(4)for i in range(4))
+def cmd(m):
+    for l in(k[1:]for k in f.open(__file__,"r").readlines() if k[0]=="#"):
+        print(l)
 if __name__ == "__main__":
     a=Etrx()
     l=10.0
@@ -56,3 +59,7 @@ if __name__ == "__main__":
     f.write(str(img))
     f.close()
     print("identiy matrix & matrix printing demo:",Etrx(idm(4)),"i only want this demo code to be 1 line, see image for adding edges & multiplication.",sep="\n")
+#ident
+#scale
+#bazinga
+#dab
