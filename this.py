@@ -7,7 +7,7 @@ class Img:
         self.r=r
         self.img=[0]*r*c
         for i in range(0,len(p),8):
-            self.ln(round(p[i]/p[i+3])+250,round(p[i+1]/p[i+3])+250,round(p[i+4]/p[i+7])+250,round(p[i+5]/p[i+7])+250,16741368)
+            self.ln(round(p[i]/p[i+3])+250,round(p[i+1]/p[i+3])+250,round(p[i+4]/p[i+7])+250,round(p[i+5]/p[i+7])+250,16741235)
     def s(self,r,c,v):
         if-1<r<self.r and-1<c<self.c:
             self.img[c+r*self.c]=v
@@ -29,7 +29,7 @@ class Img:
                 cs+=1 if rr>0 else 0
                 rr+=2*dc-2*dr if rr>0 else 2*dc
     def __str__(self):
-        return"P3 "+str(self.c)+" "+str(self.r)+" 255\n"+" ".join(str(i/65536)+" "+str(i/256%256)+" "+str(i/256) for i in self.img)
+        return"P3 "+str(self.c)+" "+str(self.r)+" 255\n"+" ".join(str(round(i/65536))+" "+str(round(i/256)%256)+" "+str(i%256) for i in self.img)
 class Etrx:
     def __init__(self,m=[]):
         self.m=m[:]
