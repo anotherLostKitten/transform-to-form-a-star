@@ -5365,3 +5365,5 @@ move
 100 50 0
 apply
 display
+save
+this.ppm

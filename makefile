@@ -1,5 +1,6 @@
 run:
+	echo "this might take ~ 10 sec to run"
 	python3 this.py
-	display this.ppm
+	echo this.ppm
 clean:
 	rm *~* \#*\# -rf *.ppm *.png
