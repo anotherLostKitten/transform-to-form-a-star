@@ -1,5 +1,5 @@
 run:
 	python3 this.py
-	echo image generated things.ppm
+	display this.ppm
 clean:
-	rm *~* \#*\#
+	rm *~* \#*\# -rf *.ppm *.png

@@ -1,17 +1,20 @@
 from math import cos,sin,pi
+from os import remove
+from subprocess import Popen,PIPE
 class Img:
-    def __init__(self,r,c):
+    def __init__(self,r,c,p=[]):
         self.c=c
         self.r=r
         self.img=[0]*r*c
+        for i in range(0,len(p),8):
+            self.ln(round(p[i]/p[i+3])+250,round(p[i+1]/p[i+3])+250,round(p[i+4]/p[i+7])+250,round(p[i+5]/p[i+7])+250,16741368)
     def s(self,r,c,v):
-        self.img[c+r*self.c]=v
+        if-1<r<self.r and-1<c<self.c:
+            self.img[c+r*self.c]=v
     def ln(self,rs,cs,rf,cf,v):
         dr=abs(rf-rs)
         dc=abs(cf-cs)
-        if rs==rf and cs==cf:
-            self.s(rs,cs,v)
-        elif rs>rf if dr<dc else cs>cf:
+        if rs>rf if dr<dc else cs>cf:
             self.ln(rf,cf,rs,cs,v)
         elif dr<dc:
             rr=2*dr-dc
@@ -35,31 +38,10 @@ class Etrx:
     def __str__(self):
         return"\n".join(" ".join(("  "if i<10 else" "if i<100 else"")+str(i) for i in self.m[j::4]) for j in range(4))+"\n"
     def x(self,m):
-        self.m=[sum(self.m[i-(i%4)+k]*float(m[i%4*4+k]) for k in range(4)) for i in range(len(self.m))]
-    def idm(self):
+        self.m=[sum(float(m[i%4+k*4])*self.m[i-(i%4)+k]for k in range(4))for i in range(len(self.m))]
+    def idm(self,e=None):
         self.m=tuple(1.0 if i==j else 0.0 for j in range(4)for i in range(4))
-def cmd(m):
-    for l in(k[1:]for k in f.open(__file__,"r").readlines() if k[0]=="#"):
-        print(l)
+def cmd(m,edgm,filename):
+    [{"ident":(lambda:m.idm()),"line":(lambda:edgm.e([float(i)for i in b[1][:3]],[float(i)for i in b[1][3:]])),"scale":(lambda:m.x((float(b[1][0]),0,0,0,0,float(b[1][1]),0,0,0,0,float(b[1][2]),0,0,0,0,1))),"move":(lambda:m.x((1,0,0,float(b[1][0]),0,1,0,float(b[1][1]),0,0,1,float(b[1][2]),0,0,0,1))),"rotate":(lambda:m.x({"x":(1,0,0,0,0,cos(float(b[1][1])/180*pi),sin(float(b[1][1])/-180*pi),0,0,sin(float(b[1][1])/180*pi),cos(float(b[1][1])/180*pi),0,0,0,0,1),"y":(cos(float(b[1][1])/180*pi),0,sin(float(b[1][1])/180*pi),0,0,1,0,0,sin(float(b[1][1])/-180*pi),0,cos(float(b[1][1])/180*pi),0,0,0,0,1),"z":(cos(float(b[1][1])/180*pi),sin(float(b[1][1])/-180*pi),0,0,sin(float(b[1][1])/180*pi),cos(float(b[1][1])/180*pi),0,0,0,1,0,0,0,0,1)}[b[1][0]])),"project":(lambda:m.x((1,0,0,0,0,1,0,0,0,0,0,0,0,0,1/float(b[1][0]),1))),"apply":(lambda:[edgm.x(m.m),m.idm()]),"display":(lambda:[open("temp.ppm","w+").write(str(Img(500,500,edgm.m))),Popen(("display","temp.ppm"),stdin=PIPE,stdout=PIPE,stderr=PIPE).communicate(),remove("temp.ppm")]),"save":(lambda:open(b[1][0],"w+").write(str(Img(500,500,edgm.m))))}[b[0]]()for b in[(e[0],(*tuple(k.split(" ")for k in open(filename,"r").read().split("\n")if k and k[0]!="#"),[])[i+1])for(i,e)in enumerate(k.split(" ")for k in open(filename,"r").read().split("\n")if k and k[0]!="#")if e and e[0]in("ident","line","scale","move","rotate","project","apply","display","save")]]
 if __name__ == "__main__":
-    a=Etrx()
-    l=10.0
-    for i in range(0,int(l)):
-        for j in range(0,int(l*2)):
-            a.e((sin(i/l*pi)*cos(j/l*pi),cos(i/l*pi),sin(i/l*pi)*sin(j/l*pi)),(sin(i/l*pi)*cos((j+1)/l*pi),cos(i/l*pi),sin(i/l*pi)*sin((j+1)/l*pi)))
-            a.e((sin(i/l*pi)*cos(j/l*pi),cos(i/l*pi),sin(i/l*pi)*sin(j/l*pi)),(sin((i+1)/l*pi)*cos(j/l*pi),cos((i+1)/l*pi),sin((i+1)/l*pi)*sin(j/l*pi)))
-    a.x((180.0,0.0,0.0,0.0,0.0,180.0,0.0,0.0,0.0,0.0,180.0,0.0,0.0,0.0,0.0,1.0))
-    a.x((1.0,0.0,0.0,0.0,0.0,cos(pi/6),sin(pi/6),0.0,0.0,sin(pi/-6),cos(pi/6),0.0,0.0,0.0,0.0,1.0))
-    a.x((cos(pi/15),0.0,sin(pi/-15),0.0,0.0,1.0,0.0,0.0,sin(pi/15),0.0,cos(pi/15),0.0,0.0,0.0,0.0,1.0))
-    a.x((1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0/250.0,0.0,0.0,0.0,1.0))
-    img=Img(500,500)
-    for i in range(0,len(a.m),8):
-        img.ln(round(a.m[i]/a.m[i+3])+250,round(a.m[i+1]/a.m[i+3])+250,round(a.m[i+4]/a.m[i+7])+250,round(a.m[i+5]/a.m[i+7])+250,16741368)
-    f=open("things.ppm","w")
-    f.write(str(img))
-    f.close()
-    print("identiy matrix & matrix printing demo:",Etrx(idm(4)),"i only want this demo code to be 1 line, see image for adding edges & multiplication.",sep="\n")
-#ident
-#scale
-#bazinga
-#dab
+    cmd(Etrx(),Etrx(),"this.lame")
